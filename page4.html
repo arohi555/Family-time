@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Party</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+    }
+    #video-container, #video-selection {
+      margin-top: 20px;
+      width: 80%;
+      max-width: 800px;
+    }
+    #chat-container {
+      width: 80%;
+      max-width: 800px;
+      margin-top: 20px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    #messages {
+      height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    #message-form {
+      display: flex;
+    }
+    #message-input {
+      flex-grow: 1;
+      padding: 8px;
+      font-size: 16px;
+    }
+    #send-button {
+      padding: 8px 12px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Watch Party</h1>
+
+  <!-- Video Selection -->
+  <div id="video-selection">
+    <label for="youtube-url">Enter YouTube Video URL:</label>
+    <input type="text" id="youtube-url" placeholder="https://www.youtube.com/watch?v=video_id">
+    <button onclick="loadYouTubeVideo()">Load Video</button>
+  </div>
+
+  <!-- Video Container -->
+  <div id="video-container">
+    <div id="youtube-player"></div>
+  </div>
+
+  <!-- Chat Container -->
+  <div id="chat-container">
+    <h2>Chat</h2>
+    <div id="messages"></div>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="Type a message..." required>
+      <button type="submit" id="send-button">Send</button>
+    </form>
+  </div>
+
+  <!-- YouTube API Script -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script>
+    let player;
+    const messages = document.getElementById("messages");
+    const messageForm = document.getElementById("message-form");
+    const messageInput = document.getElementById("message-input");
+
+    // WebSocket connection (placeholder)
+    const socket = new WebSocket("ws://your-websocket-server-url");
+
+    // Load YouTube Player
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("youtube-player", {
+        height: "390",
+        width: "640",
+        videoId: "",
+        events: {
+          "onStateChange": onPlayerStateChange
+        }
+      });
+    }
+
+    // Load a new video based on URL input
+    function loadYouTubeVideo() {
+      const url = document.getElementById("youtube-url").value;
+      const videoId = url.split("v=")[1];
+      if (videoId) {
+        player.loadVideoById(videoId);
+        socket.send(JSON.stringify({ action: "load", videoId: videoId }));
+      }
+    }
+
+    // Handle video state changes
+    function onPlayerStateChange(event) {
+      const state = event.data;
+      const time = player.getCurrentTime();
+      
+      if (state === YT.PlayerState.PLAYING) {
+        socket.send(JSON.stringify({ action: "play", time: time }));
+      } else if (state === YT.PlayerState.PAUSED) {
+        socket.send(JSON.stringify({ action: "pause", time: time }));
+      }
+    }
+
+    // Listen for WebSocket messages to sync video
+    socket.addEventListener("message", function(event) {
+      const data = JSON.parse(event.data);
+
+      if (data.action === "load") {
+        player.loadVideoById(data.videoId);
+      } else if (data.action === "play") {
+        player.seekTo(data.time, true);
+        player.playVideo();
+      } else if (data.action === "pause") {
+        player.seekTo(data.time, true);
+        player.pauseVideo();
+      }
+    });
+
+    // Handle chat messages
+    messageForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const message = messageInput.value;
+      socket.send(message);
+      messageInput.value = "";
+    });
+
+    socket.addEventListener("message", function(event) {
+      const messageElement = document.createElement("div");
+      messageElement.textContent = event.data;
+      messages.appendChild(messageElement);
+    });
+  </script>
+</body>
+</html>

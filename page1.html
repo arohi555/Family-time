@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+    <style>
+        body{
+            background-image: url(for\ website.jpeg);
+            background-repeat: no-repeat;
+            background-size:cover ;
+            background-attachment: fixed;
+
+        }
+        #maindiv{
+            background-color: rgb(237, 241, 245,0.325);
+            width: 50%;
+            border-radius: 15px;
+        }
+        h1{
+            text-align: center;
+        }
+        form{
+            padding: 8px;
+            text-align: left;
+
+        }
+        label{
+            display: block;
+            margin-top: 20px;
+            color: black;
+            font-size: 20px;
+            font-weight: bold;
+
+        }
+        input[type="text"],input[type="email"],input[type="password"],select{
+            width: 100%;
+            height: 40px;
+            margin: 2px;
+            border: none;
+
+        }
+        textarea{
+            width: 100%;
+        }
+        input[type="submit"]{
+            background-color: rgb(93, 220, 209);
+            color: aliceblue;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px;
+
+        }
+        input[type="submit"]:hover{
+            background-color: rgb(131, 30, 30);
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <center>
+    <div id="maindiv">
+        <h1>Sign up</h1>
+        <form action="page3.html">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"  placeholder="full name"><br><br>
+            <label for="Email">Email: </label>
+            <input type="email" id="Email" name="Email" placeholder="Email"><br><br>
+            <label for="password" >Password:</label>
+            <input type="password" id="password" name="password" placeholder="password"><br><br>
+            <label for="Preferences">Preferences</label>
+            <select name="Preferences" id="Preferences">
+                <option value="select">select</option>
+                <option value="horror">Horror</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Rom-Com">Rom-Com</option>
+                <option value="Action">Action</option>
+                <option value="Thriller">Thriller</option>
+            </select><br><br>
+            <label for="gender:">gender:</label>
+            <input type="radio" id="male" value="male">male
+            <input type="radio" id="female"value="female">female
+            <input type="radio" id="other"value="other">other
+            <br><br>
+            <nav class="navbar">
+            
+            <input type="submit" value="submit form">
+            
+            
+
+        </form>
+    </div>
+    </center>
+    <nav class="navbar">
+        
+    
+</body>
+</html>

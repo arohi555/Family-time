@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="index" href="index.html">
+    <title>Select OTT Platform</title>
+    <title>Dynamic Moving Gradient Background</title>
+    <link rel="stylesheet" href="nav2.css">
+    <style>
+        select {
+            padding: 10px;
+            font-size: 30px;
+        }
+        #platform-logo {
+            display: block;
+            margin-top: 20px;
+            width: 300px;
+            height: auto;
+            visibility: hidden;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff002b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            visibility: hidden;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        INSTRUCTIONS
+    </h1>
+    <ul>
+        <li> Install some necessary extension named TELEPARTY.</li>
+        <li>Choose the platforms where you wanna avail this and enjoy.</li>
+        <li></li>
+    </ul>
+
+    <h1>Select an OTT Platform to Watch the Movie</h1>
+
+    <label for="platform">Choose a platform:</label>
+    <select id="platform" onmouseover="showLogo()" onchange="loadPlatform()">
+        <option value="">--Select a platform--</option>
+        <option value="https://www.netflix.com" data-logo="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">Netflix</option>
+        <option value="https://www.primevideo.com/" data-logo="https://upload.wikimedia.org/wikipedia/commons/f/f1/Prime_Video.png">Amazon Prime</option>
+        <option value="https://www.disneyplus.com/" data-logo="https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg">Disney+</option>
+        <option value="https://www.hbomax.com/" data-logo="https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg">HBO Max</option>
+        <option value="https://www.hulu.com/" data-logo="https://upload.wikimedia.org/wikipedia/commons/e/e4/Hulu_Logo.svg">Hulu</option>
+    </select>
+
+    <div id="content">
+        <img id="platform-logo" src="" alt="Platform Logo">
+        <a id="watch-link" href="" target="_blank">Go to Platform</a>
+    </div>
+
+    <script>
+        function loadPlatform() {
+            var platform = document.getElementById("platform").value;
+            var link = document.getElementById("watch-link");
+            if (platform) {
+                link.href = platform;
+                link.style.visibility = 'visible';
+            } else {
+                link.style.visibility = 'hidden';
+            }
+        }
+
+        function showLogo() {
+            var select = document.getElementById("platform");
+            select.onmousemove = function() {
+                var logo = document.getElementById("platform-logo");
+                var selectedOption = select.options[select.selectedIndex];
+                if (selectedOption.value) {
+                    logo.src = selectedOption.getAttribute('data-logo');
+                    logo.style.visibility = 'visible';
+                } else {
+                    logo.style.visibility = 'hidden';
+                }
+            };
+        }
+    </script>
+
+</body>
+</html>
+</body>
+</html>
